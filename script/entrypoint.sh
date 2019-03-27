@@ -37,8 +37,13 @@ if [ -e "/requirements.txt" ]; then
 fi
 
 cd /usr/local/airflow/packages
-ls -l | awk '{ cd $1; python setup.py install; cd .. }'
-
+#ls -l | awk '{ cd $1; python setup.py install; cd .. }'
+for eFolder in `ls`
+do
+    cd ${eFolder}
+    python setup.py install
+    cd ..
+done
 
 if [ -n "$REDIS_PASSWORD" ]; then
     REDIS_PREFIX=:${REDIS_PASSWORD}@
