@@ -36,6 +36,10 @@ if [ -e "/requirements.txt" ]; then
     $(which pip) install --user -r /requirements.txt
 fi
 
+cd /usr/local/airflow/packages
+ls -l | awk '{ cd $1; python setup.py install; cd .. }'
+
+
 if [ -n "$REDIS_PASSWORD" ]; then
     REDIS_PREFIX=:${REDIS_PASSWORD}@
 else
