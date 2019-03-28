@@ -25,8 +25,8 @@ Pull the image from the Docker repository.
 
 Optionally install [Extra Airflow Packages](https://airflow.incubator.apache.org/installation.html#extra-package) and/or python dependencies at build time :
 
-    docker build --rm --build-arg AIRFLOW_DEPS="datadog,dask" -t puckel/docker-airflow .
-    docker build --rm --build-arg PYTHON_DEPS="flask_oauthlib>=0.9" -t puckel/docker-airflow .
+    docker build --no-cache --rm --build-arg AIRFLOW_DEPS="datadog,dask" -t puckel/docker-airflow .
+    docker build --no-cache --rm --build-arg PYTHON_DEPS="flask_oauthlib>=0.9" -t puckel/docker-airflow .
 
 or combined
 
