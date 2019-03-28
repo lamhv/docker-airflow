@@ -41,7 +41,7 @@ cd /usr/local/airflow/packages
 for eFolder in `ls`
 do
     cd ${eFolder}
-    python setup.py install
+    python setup.py install --user
     cd ..
 done
 
