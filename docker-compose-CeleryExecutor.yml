@@ -18,6 +18,7 @@ services:
     webserver:
         image: puckel/docker-airflow:latest
         restart: always
+        user: root
         depends_on:
             - postgres
             - redis
@@ -29,6 +30,7 @@ services:
             # - POSTGRES_PASSWORD=airflow
             # - POSTGRES_DB=airflow
             # - REDIS_PASSWORD=redispass
+
         volumes:
             - ./dags:/usr/local/airflow/dags
             - ./packages:/usr/local/airflow/packages
@@ -46,6 +48,7 @@ services:
     flower:
         image: puckel/docker-airflow:latest
         restart: always
+        user: root
         depends_on:
             - redis
         environment:
@@ -60,6 +63,7 @@ services:
     scheduler:
         image: puckel/docker-airflow:latest
         restart: always
+        user: root
         depends_on:
             - webserver
         volumes:
@@ -80,6 +84,7 @@ services:
     worker:
         image: puckel/docker-airflow:latest
         restart: always
+        user: root
         depends_on:
             - scheduler
         volumes:
