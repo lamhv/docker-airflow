@@ -1,0 +1,28 @@
+{
+  "sensors": [
+    {
+      "name": "data-loc",
+      "path_pattern": "/data/working/prod_v00/idata/lacci_v2/00-data_loc/upto_date={}",
+      "number_of_days": 7,
+      "interval": 1,
+      "total_path": 21,
+      "total_files": 4020
+    },
+    {
+      "name": "graph-pop2",
+      "path_pattern": "/data/working/prod_v00/graph/pop2/trx_date={}",
+      "number_of_days": 7,
+      "interval": 1,
+      "total_path": 21,
+      "total_files": 2001
+    },
+    {
+      "name": "callsms-daily-prep-for-corr",
+      "path_pattern": "/data/working/prod_v00/idata/callsms_daily_prep_for_corr/upto_date={}",
+      "number_of_days": 7,
+      "interval": 1,
+      "total_path": 21,
+      "total_files": 100
+    }
+  ]
+}

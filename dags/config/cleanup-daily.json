@@ -1,0 +1,2828 @@
+{
+  "tasks": [
+    {
+      "name": "check-bi-data_pre",
+      "params": {
+        "op_type": "hdfs-sensor",
+        "flag": "_SUCCESS",
+        "recursive": true,
+        "min_size": 8517398376,
+        "depends_on_past": true,
+        "file_path": "/idea/bi/data_pre/trx_date={{ next_execution_date.strftime('%Y%m%d') }}",
+        "pool": "check-bi-pool"
+      },
+      "upstreams": []
+    },
+    {
+      "name": "count-bi-data_pre",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 2,
+        "command": [
+          " sudo -u hdfs spark-submit ",
+          " --queue default ",
+          " --files /etc/spark2/conf/hive-site.xml ",
+          " --conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          " --conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          " --conf spark.sql.shuffle.partitions=400 ",
+          " --conf spark.executor.instances=20 ",
+          " --conf spark.yarn.executor.memoryOverhead=1g ",
+          " --executor-cores 4 ",
+          " --executor-memory 4g ",
+          " --name Count-BI-data_pre-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --class com.trustingsocial.applications.CountTotalRecord ",
+          " --master yarn-cluster ",
+          " hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          " --input-path ",
+          " hdfs://trustiq/idea/bi/data_pre/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --date ",
+          " {{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --output-table ",
+          " monitoring.total_bi ",
+          " --is-dedup ",
+          " 1 ",
+          " --fields \\*",
+          " --dataset ",
+          " data_pre "
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-data_pre"
+      ]
+    },
+
+    {
+      "name": "check-bi-payment",
+      "params": {
+        "op_type": "hdfs-sensor",
+        "flag": "",
+        "recursive": false,
+        "min_size": 229564,
+        "depends_on_past": true,
+        "file_path": "/idea/bi/payment/trx_date={{ next_execution_date.strftime('%Y%m%d') }}",
+        "pool": "check-bi-pool"
+      },
+      "upstreams": []
+    },
+    {
+      "name": "count-bi-payment",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 2,
+        "command": [
+          " sudo -u hdfs spark-submit ",
+          " --queue default ",
+          " --files /etc/spark2/conf/hive-site.xml ",
+          " --conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          " --conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          " --conf spark.sql.shuffle.partitions=400 ",
+          " --conf spark.executor.instances=20 ",
+          " --conf spark.yarn.executor.memoryOverhead=1g ",
+          " --executor-cores 4 ",
+          " --executor-memory 4g ",
+          " --name Count-BI-payment-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --class com.trustingsocial.applications.CountTotalRecord ",
+          " --master yarn-cluster ",
+          " hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          " --input-path ",
+          " hdfs://trustiq/idea/bi/payment/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --date ",
+          " {{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --output-table ",
+          " monitoring.total_bi ",
+          " --is-dedup ",
+          " 1 ",
+          " --fields \\*",
+          " --dataset ",
+          " payment "
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-payment"
+      ]
+    },
+
+    {
+      "name": "check-bi-sms",
+      "params": {
+        "op_type": "hdfs-sensor",
+        "flag": "_SUCCESS",
+        "recursive": true,
+        "min_size": 15524380135,
+        "depends_on_past": true,
+        "file_path": "/idea/bi/sms/trx_date={{ next_execution_date.strftime('%Y%m%d') }}",
+        "pool": "check-bi-pool"
+      },
+      "upstreams": []
+    },
+    {
+      "name": "count-bi-sms",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 2,
+        "command": [
+          " sudo -u hdfs spark-submit ",
+          " --queue default ",
+          " --files /etc/spark2/conf/hive-site.xml ",
+          " --conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          " --conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          " --conf spark.sql.shuffle.partitions=400 ",
+          " --conf spark.executor.instances=20 ",
+          " --conf spark.yarn.executor.memoryOverhead=1g ",
+          " --executor-cores 4 ",
+          " --executor-memory 4g ",
+          " --name Count-BI-sms-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --class com.trustingsocial.applications.CountTotalRecord ",
+          " --master yarn-cluster ",
+          " hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          " --input-path ",
+          " hdfs://trustiq/idea/bi/sms/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --date ",
+          " {{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --output-table ",
+          " monitoring.total_bi ",
+          " --is-dedup ",
+          " 1 ",
+          " --fields \\*",
+          " --dataset ",
+          " sms "
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-sms"
+      ]
+    },
+
+    {
+      "name": "check-bi-data_post",
+      "params": {
+        "op_type": "hdfs-sensor",
+        "flag": "",
+        "recursive": false,
+        "min_size": 5871086121,
+        "depends_on_past": true,
+        "file_path": "/idea/bi/data_post/trx_date={{ next_execution_date.strftime('%Y%m%d') }}",
+        "pool": "check-bi-pool"
+      },
+      "upstreams": []
+    },
+    {
+      "name": "count-bi-data_post",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 2,
+        "command": [
+          " sudo -u hdfs spark-submit ",
+          " --queue default ",
+          " --files /etc/spark2/conf/hive-site.xml ",
+          " --conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          " --conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          " --conf spark.sql.shuffle.partitions=400 ",
+          " --conf spark.executor.instances=20 ",
+          " --conf spark.yarn.executor.memoryOverhead=1g ",
+          " --executor-cores 4 ",
+          " --executor-memory 4g ",
+          " --name Count-BI-data_post-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --class com.trustingsocial.applications.CountTotalRecord ",
+          " --master yarn-cluster ",
+          " hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          " --input-path ",
+          " hdfs://trustiq/idea/bi/data_post/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --date ",
+          " {{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --output-table ",
+          " monitoring.total_bi ",
+          " --is-dedup ",
+          " 1 ",
+          " --fields \\*",
+          " --dataset ",
+          " data_post "
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-data_post"
+      ]
+    },
+
+    {
+      "name": "check-bi-vas",
+      "params": {
+        "op_type": "hdfs-sensor",
+        "flag": "",
+        "recursive": false,
+        "min_size": 27851635,
+        "depends_on_past": true,
+        "file_path": "/idea/bi/vas/trx_date={{ next_execution_date.strftime('%Y%m%d') }}",
+        "pool": "check-bi-pool"
+      },
+      "upstreams": []
+    },
+    {
+      "name": "count-bi-vas",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 2,
+        "command": [
+          " sudo -u hdfs spark-submit ",
+          " --queue default ",
+          " --files /etc/spark2/conf/hive-site.xml ",
+          " --conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          " --conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          " --conf spark.sql.shuffle.partitions=400 ",
+          " --conf spark.executor.instances=20 ",
+          " --conf spark.yarn.executor.memoryOverhead=1g ",
+          " --executor-cores 4 ",
+          " --executor-memory 4g ",
+          " --name Count-BI-vas-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --class com.trustingsocial.applications.CountTotalRecord ",
+          " --master yarn-cluster ",
+          " hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          " --input-path ",
+          " hdfs://trustiq/idea/bi/vas/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --date ",
+          " {{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --output-table ",
+          " monitoring.total_bi ",
+          " --is-dedup ",
+          " 1 ",
+          " --fields \\*",
+          " --dataset ",
+          " vas "
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-vas"
+      ]
+    },
+
+    {
+      "name": "check-bi-subs_info_pre",
+      "params": {
+        "op_type": "hdfs-sensor",
+        "flag": "_SUCCESS",
+        "recursive": false,
+        "min_size": 3588273355,
+        "depends_on_past": true,
+        "file_path": "/idea/bi/subs_info_pre/trx_date={{ next_execution_date.strftime('%Y%m%d') }}",
+        "pool": "check-bi-pool"
+      },
+      "upstreams": []
+    },
+    {
+      "name": "count-bi-subs_info_pre",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 2,
+        "command": [
+          " sudo -u hdfs spark-submit ",
+          " --queue default ",
+          " --files /etc/spark2/conf/hive-site.xml ",
+          " --conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          " --conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          " --conf spark.sql.shuffle.partitions=400 ",
+          " --conf spark.executor.instances=20 ",
+          " --conf spark.yarn.executor.memoryOverhead=1g ",
+          " --executor-cores 4 ",
+          " --executor-memory 4g ",
+          " --name Count-BI-subs_info_pre-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --class com.trustingsocial.applications.CountTotalRecord ",
+          " --master yarn-cluster ",
+          " hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          " --input-path ",
+          " hdfs://trustiq/idea/bi/subs_info_pre/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --date ",
+          " {{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --output-table ",
+          " monitoring.total_bi ",
+          " --is-dedup ",
+          " 1 ",
+          " --fields \\*",
+          " --dataset ",
+          " subs_info_pre "
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-subs_info_pre"
+      ]
+    },
+
+    {
+      "name": "check-bi-recharge",
+      "params": {
+        "op_type": "hdfs-sensor",
+        "flag": "",
+        "recursive": false,
+        "min_size": 103915224,
+        "depends_on_past": true,
+        "file_path": "/idea/bi/recharge/trx_date={{ next_execution_date.strftime('%Y%m%d') }}",
+        "pool": "check-bi-pool"
+      },
+      "upstreams": []
+    },
+    {
+      "name": "count-bi-recharge",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 2,
+        "command": [
+          " sudo -u hdfs spark-submit ",
+          " --queue default ",
+          " --files /etc/spark2/conf/hive-site.xml ",
+          " --conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          " --conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          " --conf spark.sql.shuffle.partitions=400 ",
+          " --conf spark.executor.instances=20 ",
+          " --conf spark.yarn.executor.memoryOverhead=1g ",
+          " --executor-cores 4 ",
+          " --executor-memory 4g ",
+          " --name Count-BI-recharge-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --class com.trustingsocial.applications.CountTotalRecord ",
+          " --master yarn-cluster ",
+          " hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          " --input-path ",
+          " hdfs://trustiq/idea/bi/recharge/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --date ",
+          " {{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --output-table ",
+          " monitoring.total_bi ",
+          " --is-dedup ",
+          " 1 ",
+          " --fields \\*",
+          " --dataset ",
+          " recharge "
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-recharge"
+      ]
+    },
+
+    {
+      "name": "check-bi-dbal",
+      "params": {
+        "op_type": "hdfs-sensor",
+        "flag": "",
+        "recursive": false,
+        "min_size": 1873719817,
+        "depends_on_past": true,
+        "file_path": "/idea/bi/dbal/trx_date={{ next_execution_date.strftime('%Y%m%d') }}",
+        "pool": "check-bi-pool"
+      },
+      "upstreams": []
+    },
+    {
+      "name": "count-bi-dbal",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 2,
+        "command": [
+          " sudo -u hdfs spark-submit ",
+          " --queue default ",
+          " --files /etc/spark2/conf/hive-site.xml ",
+          " --conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          " --conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          " --conf spark.sql.shuffle.partitions=400 ",
+          " --conf spark.executor.instances=20 ",
+          " --conf spark.yarn.executor.memoryOverhead=1g ",
+          " --executor-cores 4 ",
+          " --executor-memory 4g ",
+          " --name Count-BI-dbal-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --class com.trustingsocial.applications.CountTotalRecord ",
+          " --master yarn-cluster ",
+          " hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          " --input-path ",
+          " hdfs://trustiq/idea/bi/dbal/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --date ",
+          " {{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --output-table ",
+          " monitoring.total_bi ",
+          " --is-dedup ",
+          " 1 ",
+          " --fields \\*",
+          " --dataset ",
+          " dbal "
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-dbal"
+      ]
+    },
+
+    {
+      "name": "check-bi-subs_info_post",
+      "params": {
+        "op_type": "hdfs-sensor",
+        "flag": "_SUCCESS",
+        "recursive": false,
+        "min_size": 56202247,
+        "depends_on_past": true,
+        "file_path": "/idea/bi/subs_info_post/trx_date={{ next_execution_date.strftime('%Y%m%d') }}",
+        "pool": "check-bi-pool"
+      },
+      "upstreams": []
+    },
+    {
+      "name": "count-bi-subs_info_post",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 2,
+        "command": [
+          " sudo -u hdfs spark-submit ",
+          " --queue default ",
+          " --files /etc/spark2/conf/hive-site.xml ",
+          " --conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          " --conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          " --conf spark.sql.shuffle.partitions=400 ",
+          " --conf spark.executor.instances=20 ",
+          " --conf spark.yarn.executor.memoryOverhead=1g ",
+          " --executor-cores 4 ",
+          " --executor-memory 4g ",
+          " --name Count-BI-subs_info_post-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --class com.trustingsocial.applications.CountTotalRecord ",
+          " --master yarn-cluster ",
+          " hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          " --input-path ",
+          " hdfs://trustiq/idea/bi/subs_info_post/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --date ",
+          " {{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --output-table ",
+          " monitoring.total_bi ",
+          " --is-dedup ",
+          " 1 ",
+          " --fields \\*",
+          " --dataset ",
+          " subs_info_post "
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-subs_info_post"
+      ]
+    },
+
+    {
+      "name": "check-bi-voice",
+      "params": {
+        "op_type": "hdfs-sensor",
+        "flag": "_SUCCESS",
+        "recursive": true,
+        "min_size": 25517600256,
+        "depends_on_past": true,
+        "file_path": "/idea/bi/voice/trx_date={{ next_execution_date.strftime('%Y%m%d') }}",
+        "pool": "check-bi-pool"
+      },
+      "upstreams": []
+    },
+    {
+      "name": "count-bi-voice",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 2,
+        "command": [
+          " sudo -u hdfs spark-submit ",
+          " --queue default ",
+          " --files /etc/spark2/conf/hive-site.xml ",
+          " --conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          " --conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          " --conf spark.sql.shuffle.partitions=400 ",
+          " --conf spark.executor.instances=20 ",
+          " --conf spark.yarn.executor.memoryOverhead=1g ",
+          " --executor-cores 4 ",
+          " --executor-memory 4g ",
+          " --name Count-BI-voice-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --class com.trustingsocial.applications.CountTotalRecord ",
+          " --master yarn-cluster ",
+          " hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          " --input-path ",
+          " hdfs://trustiq/idea/bi/voice/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --date ",
+          " {{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --output-table ",
+          " monitoring.total_bi ",
+          " --is-dedup ",
+          " 1 ",
+          " --fields \\*",
+          " --dataset ",
+          " voice "
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-voice"
+      ]
+    },
+
+    {
+      "name": "check-yesterday-mapping",
+      "params": {
+        "op_type": "hdfs-sensor",
+        "flag": "_SUCCESS",
+        "recursive": false,
+        "min_size": 45000000000,
+        "depends_on_past": true,
+        "file_path": "/data/mapping/{{ execution_date.strftime('%Y%m%d') }}/all",
+        "pool": "check-bi-pool"
+      },
+      "upstreams": []
+    },
+    {
+      "name": "generate-new-mapping",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/mapping.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 40 ",
+          "--executor-cores 4 ",
+          "--executor-memory 8g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=600 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=new_mapping ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=new_mapping,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=new_mapping,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name new_mapping ",
+          "--config mapping.conf ",
+          "-Dcleaned_data_pre.etl.input.path=/data/clean-tmp/data_pre/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dcleaned_data_post.etl.input.path=/data/clean-tmp/data_post/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dcleaned_dbal.etl.input.path=/data/clean-tmp/dbal/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dcleaned_payment.etl.input.path=/data/clean-tmp/payment/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dcleaned_recharge.etl.input.path=/data/clean-tmp/recharge/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dcleaned_subs_info_pre.etl.input.path=/data/clean-tmp/subs_info_pre/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dcleaned_vas.etl.input.path=/data/clean-tmp/vas/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dcleaned_sms.etl.input.path=/data/clean-tmp/sms/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dcleaned_voice.etl.input.path=/data/clean-tmp/voice/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dcleaned_subs_info_post.etl.input.path=/data/clean-tmp/subs_info_post/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dcurrent_mapping.etl.input.path=/data/mapping/{{ execution_date.strftime('%Y%m%d') }}/all ",
+          "-Dnew_mapping.etl.input.path=/data/mapping/{{ execution_date.strftime('%Y%m%d') }}/new ",
+          "-Detl.output.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/new "
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "clean-voice",
+        "clean-sms",
+        "clean-data_pre",
+        "clean-data_post",
+        "clean-payment",
+        "clean-vas",
+        "clean-recharge",
+        "clean-subs_info_pre",
+        "clean-subs_info_post",
+        "clean-dbal",
+        "check-yesterday-mapping"
+      ]
+    },
+
+    {
+      "name": "merge-mapping",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/mapping_merge.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 40 ",
+          "--executor-cores 4 ",
+          "--executor-memory 8g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=600 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=merge_mapping ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=merge_mapping,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=merge_mapping,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name merge_mapping ",
+          "--config mapping_merge.conf ",
+          "-Dmerge_new_mapping.etl.input.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/new ",
+          "-Dmerge_current_mapping.etl.input.path=/data/mapping/{{ execution_date.strftime('%Y%m%d') }}/all ",
+          "-Detl.output.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/all "
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "generate-new-mapping"
+      ]
+    },
+
+    {
+      "name": "clean-data_post",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/clean_data_post.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=clean_data_post ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=data_post,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=data_post,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name clean_data_post ",
+          "--config clean_data_post.conf ",
+          "-Detl.input.path=/idea/bi/data_post/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}",
+          "-Dopt_out.etl.input.path={{ task_instance.xcom_pull(task_ids='get-opt-out-dataset') }}",
+          "-Detl.output.path=/data/clean-tmp/data_post/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-data_post"
+      ]
+    },
+    {
+      "name": "replace-data_post",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/replace_data_post.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=replace_data_post ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=data_post,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=data_post,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name replace_data_post ",
+          "--config replace_data_post.conf ",
+          "-Dreplaced_data_post.etl.input.path=/data/clean-tmp/data_post/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dall_mapping.etl.input.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/all ",
+          "-Detl.output.path=/data/clean/data_post/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} "
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "merge-mapping"
+      ]
+    },
+    {
+      "name": "fs-clean-data_post",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs hdfs dfs -rm -r -f /data/clean-tmp/data_post/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-data_post"
+      ]
+    },
+    {
+      "name": "count-clean-data_post",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=5 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 2g ",
+          "--name Count-Cleanup-data_post-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/data_post/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_clean ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\* ",
+          "--dataset ",
+          "data_post"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-data_post"
+      ]
+    },
+    {
+      "name": "count-unique-user-data_post",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=20 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--name Count-Uniq-User-data_post-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/data_post/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.uniq_user ",
+          "--is-dedup ",
+          "1 ",
+          "--fields ",
+          "sid ",
+          "--dataset ",
+          "data_post"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-data_post"
+      ]
+    },
+
+    {
+      "name": "clean-vas",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/clean_vas.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=clean_vas ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=vas,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=vas,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name clean_vas ",
+          "--config clean_vas.conf ",
+          "-Detl.input.path=/idea/bi/vas/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}",
+          "-Dopt_out.etl.input.path={{ task_instance.xcom_pull(task_ids='get-opt-out-dataset') }}",
+          "-Detl.output.path=/data/clean-tmp/vas/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-vas"
+      ]
+    },
+    {
+      "name": "replace-vas",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/replace_vas.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=replace_vas ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=vas,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=vas,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name replace_vas ",
+          "--config replace_vas.conf ",
+          "-Dreplaced_vas.etl.input.path=/data/clean-tmp/vas/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dall_mapping.etl.input.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/all ",
+          "-Detl.output.path=/data/clean/vas/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} "
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "merge-mapping"
+      ]
+    },
+    {
+      "name": "fs-clean-vas",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs hdfs dfs -rm -r -f /data/clean-tmp/vas/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-vas"
+      ]
+    },
+    {
+      "name": "count-clean-vas",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=5 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 2g ",
+          "--name Count-Cleanup-vas-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/vas/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_clean ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\* ",
+          "--dataset ",
+          "vas"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-vas"
+      ]
+    },
+    {
+      "name": "count-unique-user-vas",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=20 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--name Count-Uniq-User-vas-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/vas/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.uniq_user ",
+          "--is-dedup ",
+          "1 ",
+          "--fields ",
+          "sid ",
+          "--dataset ",
+          "vas"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-vas"
+      ]
+    },
+
+    {
+      "name": "clean-subs_info_post",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/clean_subs_info_post.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=clean_subs_info_post ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=subs_info_post,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=subs_info_post,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name clean_subs_info_post ",
+          "--config clean_subs_info_post.conf ",
+          "-Detl.input.path=/idea/bi/subs_info_post/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}",
+          "-Dopt_out.etl.input.path={{ task_instance.xcom_pull(task_ids='get-opt-out-dataset') }}",
+          "-Detl.output.path=/data/clean-tmp/subs_info_post/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-subs_info_post"
+      ]
+    },
+    {
+      "name": "replace-subs_info_post",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/replace_subs_info_post.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=replace_subs_info_post ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=subs_info_post,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=subs_info_post,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name replace_subs_info_post ",
+          "--config replace_subs_info_post.conf ",
+          "-Dreplaced_subs_info_post.etl.input.path=/data/clean-tmp/subs_info_post/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dall_mapping.etl.input.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/all ",
+          "-Detl.output.path=/data/clean/subs_info_post/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} "
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "merge-mapping"
+      ]
+    },
+    {
+      "name": "fs-clean-subs_info_post",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs hdfs dfs -rm -r -f /data/clean-tmp/subs_info_post/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-subs_info_post"
+      ]
+    },
+    {
+      "name": "count-clean-subs_info_post",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=5 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 2g ",
+          "--name Count-Cleanup-subs_info_post-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/subs_info_post/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_clean ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\* ",
+          "--dataset ",
+          "subs_info_post"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-subs_info_post"
+      ]
+    },
+    {
+      "name": "count-unique-user-subs_info_post",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=20 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--name Count-Uniq-User-subs_info_post-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/subs_info_post/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.uniq_user ",
+          "--is-dedup ",
+          "1 ",
+          "--fields ",
+          "sid ",
+          "--dataset ",
+          "subs_info_post"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-subs_info_post"
+      ]
+    },
+
+    {
+      "name": "clean-sms",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/clean_sms.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 40 ",
+          "--executor-cores 4 ",
+          "--executor-memory 8g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=600 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=clean_sms ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=sms,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=sms,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name clean_sms ",
+          "--config clean_sms.conf ",
+          "-Detl.input.path=/idea/bi/sms/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}",
+          "-Dopt_out.etl.input.path={{ task_instance.xcom_pull(task_ids='get-opt-out-dataset') }}",
+          "-Detl.output.path=/data/clean-tmp/sms/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-sms"
+      ]
+    },
+    {
+      "name": "replace-sms",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/replace_sms.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 40 ",
+          "--executor-cores 4 ",
+          "--executor-memory 8g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=600 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=replace_sms ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=sms,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=sms,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name replace_sms ",
+          "--config replace_sms.conf ",
+          "-Dreplaced_sms.etl.input.path=/data/clean-tmp/sms/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dall_mapping.etl.input.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/all ",
+          "-Detl.output.path=/data/clean/sms/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} "
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "merge-mapping"
+      ]
+    },
+    {
+      "name": "fs-clean-sms",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs hdfs dfs -rm -r -f /data/clean-tmp/sms/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-sms"
+      ]
+    },
+    {
+      "name": "count-clean-sms",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=5 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 2g ",
+          "--name Count-Cleanup-sms-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/sms/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_clean ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\* ",
+          "--dataset ",
+          "sms"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-sms"
+      ]
+    },
+    {
+      "name": "count-unique-user-sms",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=20 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--name Count-Uniq-User-sms-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/sms/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.uniq_user ",
+          "--is-dedup ",
+          "1 ",
+          "--fields ",
+          "sid ",
+          "--dataset ",
+          "sms"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-sms"
+      ]
+    },
+
+    {
+      "name": "clean-data_pre",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/clean_data_pre.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 40 ",
+          "--executor-cores 4 ",
+          "--executor-memory 8g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=600 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=clean_data_pre ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=data_pre,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=data_pre,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name clean_data_pre ",
+          "--config clean_data_pre.conf ",
+          "-Detl.input.path=/idea/bi/data_pre/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}",
+          "-Dopt_out.etl.input.path={{ task_instance.xcom_pull(task_ids='get-opt-out-dataset') }}",
+          "-Detl.output.path=/data/clean-tmp/data_pre/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-data_pre"
+      ]
+    },
+    {
+      "name": "replace-data_pre",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/replace_data_pre.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 40 ",
+          "--executor-cores 4 ",
+          "--executor-memory 8g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=600 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=replace_data_pre ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=data_pre,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=data_pre,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name replace_data_pre ",
+          "--config replace_data_pre.conf ",
+          "-Dreplaced_data_pre.etl.input.path=/data/clean-tmp/data_pre/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dall_mapping.etl.input.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/all ",
+          "-Detl.output.path=/data/clean/data_pre/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} "
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "merge-mapping"
+      ]
+    },
+    {
+      "name": "fs-clean-data_pre",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs hdfs dfs -rm -r -f /data/clean-tmp/data_pre/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-data_pre"
+      ]
+    },
+    {
+      "name": "count-clean-data_pre",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=5 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 2g ",
+          "--name Count-Cleanup-data_pre-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/data_pre/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_clean ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\* ",
+          "--dataset ",
+          "data_pre"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-data_pre"
+      ]
+    },
+    {
+      "name": "count-unique-user-data_pre",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=20 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--name Count-Uniq-User-data_pre-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/data_pre/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.uniq_user ",
+          "--is-dedup ",
+          "1 ",
+          "--fields ",
+          "sid ",
+          "--dataset ",
+          "data_pre"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-data_pre"
+      ]
+    },
+
+    {
+      "name": "clean-payment",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/clean_payment.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=clean_payment ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=payment,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=payment,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name clean_payment ",
+          "--config clean_payment.conf ",
+          "-Detl.input.path=/idea/bi/payment/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}",
+          "-Dopt_out.etl.input.path={{ task_instance.xcom_pull(task_ids='get-opt-out-dataset') }}",
+          "-Detl.output.path=/data/clean-tmp/payment/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-payment"
+      ]
+    },
+    {
+      "name": "replace-payment",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/replace_payment.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=replace_payment ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=payment,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=payment,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name replace_payment ",
+          "--config replace_payment.conf ",
+          "-Dreplaced_payment.etl.input.path=/data/clean-tmp/payment/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dall_mapping.etl.input.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/all ",
+          "-Detl.output.path=/data/clean/payment/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} "
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "merge-mapping"
+      ]
+    },
+    {
+      "name": "fs-clean-payment",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs hdfs dfs -rm -r -f /data/clean-tmp/payment/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-payment"
+      ]
+    },
+    {
+      "name": "count-clean-payment",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=5 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 2g ",
+          "--name Count-Cleanup-payment-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/payment/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_clean ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\* ",
+          "--dataset ",
+          "payment"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-payment"
+      ]
+    },
+    {
+      "name": "count-unique-user-payment",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=20 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--name Count-Uniq-User-payment-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/payment/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.uniq_user ",
+          "--is-dedup ",
+          "1 ",
+          "--fields ",
+          "sid ",
+          "--dataset ",
+          "payment"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-payment"
+      ]
+    },
+
+    {
+      "name": "clean-voice",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/clean_voice.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 40 ",
+          "--executor-cores 4 ",
+          "--executor-memory 8g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=600 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=clean_voice ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=voice,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=voice,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name clean_voice ",
+          "--config clean_voice.conf ",
+          "-Detl.input.path=/idea/bi/voice/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}",
+          "-Dopt_out.etl.input.path={{ task_instance.xcom_pull(task_ids='get-opt-out-dataset') }}",
+          "-Detl.output.path=/data/clean-tmp/voice/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-voice"
+      ]
+    },
+    {
+      "name": "replace-voice",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/replace_voice.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 40 ",
+          "--executor-cores 4 ",
+          "--executor-memory 8g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=600 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=replace_voice ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=voice,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=voice,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name replace_voice ",
+          "--config replace_voice.conf ",
+          "-Dreplaced_voice.etl.input.path=/data/clean-tmp/voice/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dall_mapping.etl.input.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/all ",
+          "-Detl.output.path=/data/clean/voice/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} "
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "merge-mapping"
+      ]
+    },
+    {
+      "name": "fs-clean-voice",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs hdfs dfs -rm -r -f /data/clean-tmp/voice/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-voice"
+      ]
+    },
+    {
+      "name": "count-clean-voice",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=5 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 2g ",
+          "--name Count-Cleanup-voice-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/voice/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_clean ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\* ",
+          "--dataset ",
+          "voice"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-voice"
+      ]
+    },
+    {
+      "name": "count-unique-user-voice",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=20 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--name Count-Uniq-User-voice-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/voice/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.uniq_user ",
+          "--is-dedup ",
+          "1 ",
+          "--fields ",
+          "sid ",
+          "--dataset ",
+          "voice"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-voice"
+      ]
+    },
+
+    {
+      "name": "clean-subs_info_pre",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/clean_subs_info_pre.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=clean_subs_info_pre ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=subs_info_pre,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=subs_info_pre,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name clean_subs_info_pre ",
+          "--config clean_subs_info_pre.conf ",
+          "-Detl.input.path=/idea/bi/subs_info_pre/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}",
+          "-Dopt_out.etl.input.path={{ task_instance.xcom_pull(task_ids='get-opt-out-dataset') }}",
+          "-Detl.output.path=/data/clean-tmp/subs_info_pre/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-subs_info_pre"
+      ]
+    },
+    {
+      "name": "replace-subs_info_pre",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/replace_subs_info_pre.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=replace_subs_info_pre ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=subs_info_pre,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=subs_info_pre,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name replace_subs_info_pre ",
+          "--config replace_subs_info_pre.conf ",
+          "-Dreplaced_subs_info_pre.etl.input.path=/data/clean-tmp/subs_info_pre/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dall_mapping.etl.input.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/all ",
+          "-Detl.output.path=/data/clean/subs_info_pre/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} "
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "merge-mapping"
+      ]
+    },
+    {
+      "name": "fs-clean-subs_info_pre",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs hdfs dfs -rm -r -f /data/clean-tmp/subs_info_pre/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-subs_info_pre"
+      ]
+    },
+    {
+      "name": "count-clean-subs_info_pre",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=5 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 2g ",
+          "--name Count-Cleanup-subs_info_pre-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/subs_info_pre/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_clean ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\* ",
+          "--dataset ",
+          "subs_info_pre"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-subs_info_pre"
+      ]
+    },
+    {
+      "name": "count-unique-user-subs_info_pre",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=20 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--name Count-Uniq-User-subs_info_pre-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/subs_info_pre/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.uniq_user ",
+          "--is-dedup ",
+          "1 ",
+          "--fields ",
+          "sid ",
+          "--dataset ",
+          "subs_info_pre"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-subs_info_pre"
+      ]
+    },
+
+    {
+      "name": "clean-recharge",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/clean_recharge.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=clean_recharge ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=recharge,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=recharge,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name clean_recharge ",
+          "--config clean_recharge.conf ",
+          "-Detl.input.path=/idea/bi/recharge/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}",
+          "-Dopt_out.etl.input.path={{ task_instance.xcom_pull(task_ids='get-opt-out-dataset') }}",
+          "-Detl.output.path=/data/clean-tmp/recharge/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-recharge"
+      ]
+    },
+    {
+      "name": "replace-recharge",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/replace_recharge.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=replace_recharge ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=recharge,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=recharge,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name replace_recharge ",
+          "--config replace_recharge.conf ",
+          "-Dreplaced_recharge.etl.input.path=/data/clean-tmp/recharge/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dall_mapping.etl.input.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/all ",
+          "-Detl.output.path=/data/clean/recharge/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} "
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "merge-mapping"
+      ]
+    },
+    {
+      "name": "fs-clean-recharge",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs hdfs dfs -rm -r -f /data/clean-tmp/recharge/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-recharge"
+      ]
+    },
+    {
+      "name": "count-clean-recharge",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=5 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 2g ",
+          "--name Count-Cleanup-recharge-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/recharge/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_clean ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\* ",
+          "--dataset ",
+          "recharge"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-recharge"
+      ]
+    },
+    {
+      "name": "count-unique-user-recharge",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=20 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--name Count-Uniq-User-recharge-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/recharge/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.uniq_user ",
+          "--is-dedup ",
+          "1 ",
+          "--fields ",
+          "sid ",
+          "--dataset ",
+          "recharge"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-recharge"
+      ]
+    },
+
+    {
+      "name": "clean-dbal",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/clean_dbal.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=clean_dbal ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=dbal,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=dbal,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name clean_dbal ",
+          "--config clean_dbal.conf ",
+          "-Detl.input.path=/idea/bi/dbal/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}",
+          "-Dopt_out.etl.input.path={{ task_instance.xcom_pull(task_ids='get-opt-out-dataset') }}",
+          "-Detl.output.path=/data/clean-tmp/dbal/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-dbal"
+      ]
+    },
+    {
+      "name": "replace-dbal",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/replace_dbal.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=replace_dbal ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=dbal,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=dbal,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name replace_dbal ",
+          "--config replace_dbal.conf ",
+          "-Dreplaced_dbal.etl.input.path=/data/clean-tmp/dbal/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "-Dall_mapping.etl.input.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/all ",
+          "-Detl.output.path=/data/clean/dbal/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }} "
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "merge-mapping"
+      ]
+    },
+    {
+      "name": "fs-clean-dbal",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs hdfs dfs -rm -r -f /data/clean-tmp/dbal/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-dbal"
+      ]
+    },
+    {
+      "name": "count-clean-dbal",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=5 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 2g ",
+          "--name Count-Cleanup-dbal-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/dbal/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_clean ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\* ",
+          "--dataset ",
+          "dbal"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-dbal"
+      ]
+    },
+    {
+      "name": "count-unique-user-dbal",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=20 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--name Count-Uniq-User-dbal-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/dbal/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.uniq_user ",
+          "--is-dedup ",
+          "1 ",
+          "--fields ",
+          "sid ",
+          "--dataset ",
+          "dbal"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "replace-dbal"
+      ]
+    },
+
+    {
+      "name": "check-bi-cell_info",
+      "params": {
+        "op_type": "hdfs-sensor",
+        "flag": "_SUCCESS",
+        "recursive": false,
+        "min_size": 40052738,
+        "depends_on_past": true,
+        "file_path": "/idea/bi/cell_info/trx_date={{ next_execution_date.strftime('%Y%m%d') }}",
+        "pool": "check-bi-pool"
+      },
+      "upstreams": []
+    },
+    {
+      "name": "count-bi-cell_info",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 2,
+        "command": [
+          " sudo -u hdfs spark-submit ",
+          " --queue default ",
+          " --files /etc/spark2/conf/hive-site.xml ",
+          " --conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          " --conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          " --conf spark.sql.shuffle.partitions=400 ",
+          " --conf spark.executor.instances=20 ",
+          " --conf spark.yarn.executor.memoryOverhead=1g ",
+          " --executor-cores 4 ",
+          " --executor-memory 4g ",
+          " --name Count-BI-cell_info-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --class com.trustingsocial.applications.CountTotalRecord ",
+          " --master yarn-cluster ",
+          " hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          " --input-path ",
+          " hdfs://trustiq/idea/bi/cell_info/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --date ",
+          " {{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --output-table ",
+          " monitoring.total_bi ",
+          " --is-dedup ",
+          " 1 ",
+          " --fields \\*",
+          " --dataset ",
+          " cell_info "
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-cell_info"
+      ]
+    },
+    {
+      "name": "clean-cell_info",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/clean_cell_info.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=clean_cell_info ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=cell_info,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=cell_info,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name clean_cell_info ",
+          "--config clean_cell_info.conf ",
+          "-Detl.input.path=/idea/bi/cell_info/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}",
+          "-Detl.output.path=/data/clean/cell_info/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "count-bi-cell_info"
+      ]
+    },
+    {
+      "name": "count-clean-cell_info",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=5 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 2g ",
+          "--name Count-Cleanup-cell_info-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/cell_info/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_clean ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\* ",
+          "--dataset ",
+          "cell_info"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "clean-cell_info"
+      ]
+    },
+
+    {
+      "name": "check-bi-tac",
+      "params": {
+        "op_type": "hdfs-sensor",
+        "flag": "_SUCCESS",
+        "recursive": false,
+        "min_size": 1057886,
+        "depends_on_past": true,
+        "file_path": "/idea/bi/tac/trx_date={{ next_execution_date.strftime('%Y%m%d') }}",
+        "pool": "check-bi-pool"
+      },
+      "upstreams": []
+    },
+    {
+      "name": "count-bi-tac",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 2,
+        "command": [
+          " sudo -u hdfs spark-submit ",
+          " --queue default ",
+          " --files /etc/spark2/conf/hive-site.xml ",
+          " --conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          " --conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          " --conf spark.sql.shuffle.partitions=400 ",
+          " --conf spark.executor.instances=20 ",
+          " --conf spark.yarn.executor.memoryOverhead=1g ",
+          " --executor-cores 4 ",
+          " --executor-memory 4g ",
+          " --name Count-BI-tac-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --class com.trustingsocial.applications.CountTotalRecord ",
+          " --master yarn-cluster ",
+          " hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          " --input-path ",
+          " hdfs://trustiq/idea/bi/tac/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --date ",
+          " {{ next_execution_date.strftime('%Y%m%d') }} ",
+          " --output-table ",
+          " monitoring.total_bi ",
+          " --is-dedup ",
+          " 1 ",
+          " --fields \\*",
+          " --dataset ",
+          " tac "
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "check-bi-tac"
+      ]
+    },
+    {
+      "name": "clean-tac",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/clean_tac.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 20 ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=clean_tac ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=tac,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=tac,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name clean_tac ",
+          "--config clean_tac.conf ",
+          "-Detl.input.path=/idea/bi/tac/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}",
+          "-Detl.output.path=/data/clean/tac/trx_date\\\\={{ next_execution_date.strftime('%Y%m%d') }}"
+        ],
+        "can_false": false,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "count-bi-tac"
+      ]
+    },
+    {
+      "name": "count-clean-tac",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=5 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 2g ",
+          "--name Count-Cleanup-tac-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "/data/clean/tac/trx_date={{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_clean ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\* ",
+          "--dataset ",
+          "tac"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "clean-tac"
+      ]
+    },
+
+    {
+      "name": "mapping-for-rocksdb",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit --master yarn-cluster ",
+          "--class com.trustingsocial.processor.spark.app.Processor ",
+          "--files hdfs://trustiq/apps/trust-data/conf/mapping_for_rocksdb.conf,hdfs://trustiq/apps/trust-data/conf/trustingsocial.conf,hdfs://trustiq//apps/trust-data/metrics.properties ",
+          "--queue default ",
+          "--driver-memory 2g ",
+          "--num-executors 40 ",
+          "--executor-cores 4 ",
+          "--executor-memory 8g ",
+          "--jars hdfs://trustiq/apps/trust-data/lib/simpleclient_pushgateway-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/simpleclient-0.6.0.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting_2.11-0.1.0-SNAPSHOT.jar,hdfs://trustiq/apps/trust-data/lib/spark-trusting-assembly-0.1.0-SNAPSHOT-deps.jar,hdfs://trustiq/apps/trust-data/lib/spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.extraListeners=org.apache.spark.sql.execution.ui.trustingsocial.CustomSQLListener ",
+          "--conf spark.executor.extraClassPath=simpleclient-0.6.0.jar:simpleclient_pushgateway-0.6.0.jar:spark-extras_2.11-0.1.0-SNAPSHOT.jar ",
+          "--conf spark.metrics.conf=metrics.properties ",
+          "--conf spark.sql.shuffle.partitions=600 ",
+          "--conf spark.yarn.executor.memoryOverhead=2g ",
+          "--conf spark.dynamicAllocation.enabled=false ",
+          "--conf spark.kryoserializer.buffer.max=1g ",
+          "--conf spark.storage.memoryFraction=0.2 ",
+          "--conf spark.hadoop.dfs.replication=3 ",
+          "--conf spark.app.name=mapping_for_rocksdb ",
+          "--conf spark.driver.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=mapping_for_rocksdb,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.executor.extraJavaOptions=\"-Dprometheus.label.names=dataset,date -Dprometheus.label.values=mapping_for_rocksdb,{{ next_execution_date.strftime('%Y%m%d') }} -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps\" ",
+          "--conf spark.debug.maxToStringFields=100 ",
+          "hdfs://trustiq/apps/trust-data/lib/processor-assembly-0.1.0-SNAPSHOT.jar ",
+          "--app-name mapping_for_rocksdb ",
+          "--config mapping_for_rocksdb.conf ",
+          "-Dnew_mapping_for_rocksdb.etl.input.path=/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/new ",
+          "-Detl.output.path=/data/mapping-csv/{{ next_execution_date.strftime('%Y%m%d') }} "
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "generate-new-mapping"
+      ]
+    },
+    {
+      "name": "count-new-mapping",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=10 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--name Count-New-Mapping-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "hdfs://trustiq/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/new ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_mapping ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\*",
+          "--dataset ",
+          "new"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "generate-new-mapping"
+      ]
+    },
+    {
+      "name": "count-all-mapping",
+      "params": {
+        "op_type": "bash",
+        "priority_weight": 1,
+        "command": [
+          "sudo -u hdfs spark-submit ",
+          "--queue default ",
+          "--master yarn-cluster ",
+          "--files /etc/spark2/conf/hive-site.xml ",
+          "--conf spark.sql.warehouse.dir=hdfs://trustiq/apps/hive/warehouse ",
+          "--conf hive.metastore.uris=thrift://iabtrznnd001.ts.local.id:9083 ",
+          "--conf spark.sql.shuffle.partitions=400 ",
+          "--conf spark.executor.instances=10 ",
+          "--conf spark.yarn.executor.memoryOverhead=1g ",
+          "--executor-cores 4 ",
+          "--executor-memory 4g ",
+          "--name Count-All-Mapping-{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--class com.trustingsocial.applications.CountTotalRecord ",
+          "hdfs://trustiq/apps/etl-commons/lib/ETL-assembly-2.1.jar ",
+          "--input-path ",
+          "hdfs://trustiq/data/mapping/{{ next_execution_date.strftime('%Y%m%d') }}/all ",
+          "--date ",
+          "{{ next_execution_date.strftime('%Y%m%d') }} ",
+          "--output-table ",
+          "monitoring.total_mapping ",
+          "--is-dedup ",
+          "0 ",
+          "--fields \\* ",
+          "--dataset ",
+          "all"
+        ],
+        "can_false": true,
+        "pool": "cleanup-pool"
+      },
+      "upstreams": [
+        "merge-mapping"
+      ]
+    }
+  ]
+}

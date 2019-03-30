@@ -1,0 +1,12 @@
+{
+  "sensors": [
+    {
+      "name": "data-loc",
+      "path_pattern": "/data/working/prod_v00/idata/lacci_v2/00-data_loc/upto_date={}",
+      "number_of_days": 7,
+      "interval": 1,
+      "total_path": 21,
+      "total_files": 4020
+    }
+  ]
+}
