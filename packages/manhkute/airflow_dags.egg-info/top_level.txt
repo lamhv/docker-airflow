@@ -1,4 +1,0 @@
-contrib
-idea
-parse_ipynb
-state_machine
